@@ -32,6 +32,15 @@ struct Failure { std::string msg; };
 using namespace bank;
 
 // ---------------- Money ----------------
+TEST(money_from_dollars) {
+    CHECK(Money::fromDollars(12, 34).cents() == 1234);
+    CHECK(Money::fromDollars(-3, 7).cents() == -307);
+    CHECK(Money::fromDollars(0).cents() == 0);
+    CHECK_THROWS_AS(Money::fromDollars(5, 100), InvalidAmountError);
+    CHECK_THROWS_AS(Money::fromDollars(5, -1), InvalidAmountError);
+    CHECK_THROWS_AS(Money::fromDollars(INT64_MAX), InvalidAmountError);
+}
+
 TEST(money_parse_basic) {
     CHECK(Money::parse("12.34").cents() == 1234);
     CHECK(Money::parse("$1,000").cents() == 100000);
